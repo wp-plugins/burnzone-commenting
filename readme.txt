@@ -1,4 +1,4 @@
-=== BurnZone Commenting ===
+=== BurnZone Commenting (BETA) ===
 Contributors: BurnZone
 Tags: comments
 Requires at least: 3.0.5
