@@ -23,7 +23,7 @@
     global $conv_opt_name_sso_logo;
     $data = array(
       'logo' => get_option($conv_opt_name_sso_logo),
-      'loginUrl' => wp_login_url(CONVERSAIT_LOGIN_ROOT . '/popup_auth_ok.html'),
+      'loginUrl' => wp_login_url(CONVERSAIT_SERVER_HOST . '/web/auth/popup_auth_ok.html'),
       'logoutUrl' => wp_logout_url(get_permalink())
     );
     return json_encode($data);

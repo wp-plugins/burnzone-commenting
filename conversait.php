@@ -4,7 +4,7 @@
 Plugin Name: Conversait Wordpress Plugin
 Plugin URI: http://theburn-zone.com
 Description: Integrates the Conversait commenting engine
-Version: 0.1
+Version: 0.1.1
 Author: The Burnzone team
 Author URI: http://theburn-zone.com
 License: GPL2
