@@ -24,9 +24,9 @@
     add_option($conv_opt_name_sso_logo, $conv_sso_logo_default);
   }
 
-  define('CONVERSAIT_SERVER_HOST', 'http://cvst.chickenkiller.com:8082');
-  define('CONVERSAIT_DOMAIN', 'chickenkiller.com');
-  define('CONVERSAIT_LOGIN_ROOT', 'http://cvst.chickenkiller.com:8082/auth');
+  define('CONVERSAIT_SERVER_HOST', 'http://commenting.theburn-zone.com');
+  define('CONVERSAIT_DOMAIN', 'theburn-zone.com');
+  define('CONVERSAIT_LOGIN_ROOT', 'http://theburn-zone.com/auth');
 
   if (file_exists(CONVERSAIT_PATH . 'site.php')) {
     include(CONVERSAIT_PATH . 'site.php');
