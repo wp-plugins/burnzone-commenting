@@ -4,7 +4,7 @@
 Plugin Name: Conversait Wordpress Plugin
 Plugin URI: http://theburn-zone.com
 Description: Integrates the Conversait commenting engine
-Version: 0.1
+Version: 0.2
 Author: The Burnzone team
 Author URI: http://theburn-zone.com
 License: GPL2
@@ -37,9 +37,11 @@ function should_replace_comments($post) {
   global $conv_opt_name_enabled_date;
   $post_time = strtotime($post->post_date);
   $enabled_time = (int)get_option($conv_opt_name_enabled_date);
-  if ($enabled_time < $post_time)
-    return true;
-  return false;
+  if ($post->post_type === "attachment")
+    return false;
+  if ($enabled_time >= $post_time)
+    return false;
+  return true;
 }
 
 /**
@@ -74,7 +76,7 @@ function conv_comments_number($output) {
 }
 
 function conv_enqueue_scripts() {
-  wp_enqueue_script('convcommentscount', CONVERSAIT_SERVER_HOST . '/web/javascripts/counts.js');
+  wp_enqueue_script('convcommentscount', CONVERSAIT_SERVER_HOST . '/web/js/counts.js');
 }
 
 function conv_head() {
@@ -93,6 +95,32 @@ if ($enabled === '1' and isset($site_name) and $site_name !== '') {
   add_action('wp_enqueue_scripts', 'conv_enqueue_scripts');
   add_action('wp_head', 'conv_head');
 }
+
+/**
+* Add dashboard widget
+*/
+
+add_action( 'wp_dashboard_setup', 'cvst_dashboard_widget' );
+function cvst_dashboard_widget() {
+    add_meta_box(
+        'cvst-dashboard-widget',
+        'Conversait Widget',
+        'cvst_dashboard_content',
+        'dashboard',
+        'normal',
+        'high'
+    );
+}
+
+function cvst_dashboard_content(){
+  global $conv_opt_name_site_name;
+    $site_name = get_option($conv_opt_name_site_name);
+  ?>
+
+  <div class="wrap">
+  <iframe src="<?php echo CONVERSAIT_LOGIN_ROOT . "/signin?redirect=" . urlencode("/admin/moderator?embed=true&site=" . $site_name); ?>" style="width:100%; min-height:500px;"></iframe>
+  </div>
+<?php }
 
 /**
 * Allow redirects to external sites

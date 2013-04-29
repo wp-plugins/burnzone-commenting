@@ -11,7 +11,7 @@
     var conversait = document.createElement("script"); 
     conversait.type = "text/javascript"; 
     conversait.async = true;
-    conversait.src = "' . CONVERSAIT_SERVER_HOST . '/web/javascripts/embed.js";
+    conversait.src = "' . CONVERSAIT_SERVER_HOST . '/web/js/embed.js";
     (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(conversait);
   })();
 </script>
