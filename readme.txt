@@ -1,9 +1,9 @@
-=== BurnZone Commenting (BETA) ===
+=== BurnZone Commenting ===
 Contributors: BurnZone
 Tags: comments
 Requires at least: 3.0.5
-Tested up to: 3.4.2
-Stable tag: 0.1.1
+Tested up to: 3.5.1
+Stable tag: 0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,13 +59,26 @@ For more information, you can always check our official help section that we're 
 
 == Changelog ==
 
+= 0.3 =
+* Can select for what post types to enable BurnZone (e.g. posts, pages).
+* Can select when to enable BurnZone
+  * For all posts
+  * When the comments are 'closed'
+  * For all posts created since a particular date.
+
+= 0.2 =
+* Pre 0.3 version, for beta partners and downloadable from our site only. It contains most of the things in 0.3.
+
 = 0.1.1 =
-Fixed urls
+* Fixed urls to Burnzone
 
 = 0.1 =
-Beta release
+* Beta release
 
 == Upgrade Notice ==
+
+= 0.3 =
+There are no known issues.
 
 = 0.1 =
 This is currently the only plugin version.

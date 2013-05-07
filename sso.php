@@ -20,9 +20,9 @@
   }
 
   function buildSSOOptions() {
-    global $conv_opt_name_sso_logo;
+    global $conv_opt_name_sso_logo, $conv_opt;
     $data = array(
-      'logo' => get_option($conv_opt_name_sso_logo),
+      'logo' => $conv_opt[$conv_opt_name_sso_logo],
       'loginUrl' => wp_login_url(CONVERSAIT_SERVER_HOST . '/web/auth/popup_auth_ok.html'),
       'logoutUrl' => wp_logout_url(get_permalink())
     );
