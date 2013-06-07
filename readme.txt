@@ -1,4 +1,4 @@
-=== BurnZone Commenting ===
+=== BurnZone Competitive Commenting ===
 Contributors: BurnZone
 Tags: comments
 Requires at least: 3.0.5
@@ -11,7 +11,7 @@ This plugin will embed the BurnZone Commenting platform in your blog. It will de
 
 == Description ==
 
-BurnZone Commenting is a fully customizable commenting platform that brings industry first competitive features in addition to all the standard commenting features. We have just released the BETA version and we would be happy to get feedback from you!
+BurnZone Commenting is a fully customizable commenting platform that brings industry first competitive features in addition to all the standard commenting features. We have just released a fully functional BETA version and we would be happy to receive feedback.
 
 Current features:
 
