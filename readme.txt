@@ -1,13 +1,13 @@
 === BurnZone Competitive Commenting ===
 Contributors: BurnZone
-Tags: comments
+Tags: comments, comment system, commenting system, commenting platform
 Requires at least: 3.0.5
-Tested up to: 3.5.1
-Stable tag: 0.3
+Tested up to: 3.5.2
+Stable tag: 0.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin will embed the BurnZone Commenting platform in your blog. It will definitely improve your readers' commenting experience!
+This plugin will embed the BurnZone Commenting system in your blog. It will definitely improve your readers' commenting experience!
 
 == Description ==
 
@@ -59,6 +59,14 @@ For more information, you can always check our official help section that we're 
 
 == Changelog ==
 
+= 0.3.1 =
+* Improved the settings page user experience
+* Added a nice timepicker addon on the settings page
+* Added a help note on the settings page
+* BurnZone Commenting is compatible with the latest WordPress version (3.5.2)
+
+We also recently improved the interface of our comment system.
+
 = 0.3 =
 * Can select for what post types to enable BurnZone (e.g. posts, pages).
 * Can select when to enable BurnZone
@@ -76,6 +84,9 @@ For more information, you can always check our official help section that we're 
 * Beta release
 
 == Upgrade Notice ==
+
+= 0.3.1 =
+Improved the plugin settings page
 
 = 0.3 =
 There are no known issues.
