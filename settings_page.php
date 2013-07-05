@@ -108,7 +108,7 @@ function conv_render_setting_activation() {
 function conv_render_setting_site_name() {
   global $conv_opt_name_site_name, $conv_opt, $conv_opt_name;
   $site_name = $conv_opt[$conv_opt_name_site_name];
-  echo "<input type=\"text\" id=\"$conv_opt_name_site_name\" name=\"" . $conv_opt_name . "[$conv_opt_name_site_name]\" value=\"$site_name\" /><p class=\"description\">This is the site name you set up on our website after <a href=\"http://www.theburn-zone.com/signup\" target=\"_blank\" title=\"BurnZone Commenting sign-up page\">signing up</a>.</p>";
+  echo "<input type=\"text\" id=\"$conv_opt_name_site_name\" name=\"" . $conv_opt_name . "[$conv_opt_name_site_name]\" value=\"$site_name\" /><p class=\"description\">This is the site name you set up on our website <a href=\"http://www.theburn-zone.com/signin?redirect=/admin\" target=\"_blank\" title=\"BurnZone Commenting sign-up page\">after signing up</a>.</p>";
 }
 
 function conv_settings_sso_title() {
