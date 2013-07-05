@@ -1,10 +1,10 @@
 <?php
 
 /*
-Plugin Name: Conversait Wordpress Plugin
+Plugin Name: BurnZone Commenting Wordpress Plugin
 Plugin URI: http://www.theburn-zone.com
-Description: Integrates the Conversait commenting engine
-Version: 0.3
+Description: Integrates the BurnZone commenting engine
+Version: 0.3.1
 Author: The Burnzone team
 Author URI: http://www.theburn-zone.com
 License: GPL2
@@ -120,7 +120,7 @@ add_action( 'wp_dashboard_setup', 'conv_dashboard_widget' );
 function conv_dashboard_widget() {
     add_meta_box(
         'conv-dashboard-widget',
-        'Conversait Widget',
+        'BurnZone Commenting Widget',
         'conv_dashboard_content',
         'dashboard',
         'normal',
