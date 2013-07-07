@@ -3,7 +3,7 @@ Contributors: BurnZone
 Tags: comments, comment system, commenting system, commenting platform
 Requires at least: 3.0.5
 Tested up to: 3.5.2
-Stable tag: 0.3.1
+Stable tag: 0.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,6 +58,10 @@ For more information, you can always check our official help section that we're 
 5. Single question screen. Every question can be answered and every answer can be commented.
 
 == Changelog ==
+
+= 0.3.2 =
+* Corrected a link to our site
+* Minor changes to description texts
 
 = 0.3.1 =
 * Improved the settings page user experience

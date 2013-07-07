@@ -4,7 +4,7 @@
 Plugin Name: BurnZone Commenting Wordpress Plugin
 Plugin URI: http://www.theburn-zone.com
 Description: Integrates the BurnZone commenting engine
-Version: 0.3.1
+Version: 0.3.2
 Author: The Burnzone team
 Author URI: http://www.theburn-zone.com
 License: GPL2
