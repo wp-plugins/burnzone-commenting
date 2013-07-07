@@ -45,7 +45,7 @@ function conv_render_settings_enabledfor() {
     </div>
   <?php 
   } ?>
-  <p class="description">Type of posts where you want the commenting system to be activated</p>
+  <p class="description">Type of posts where you want the commenting system to be activated.</p>
   <?php
 }
 
@@ -108,7 +108,7 @@ function conv_render_setting_activation() {
 function conv_render_setting_site_name() {
   global $conv_opt_name_site_name, $conv_opt, $conv_opt_name;
   $site_name = $conv_opt[$conv_opt_name_site_name];
-  echo "<input type=\"text\" id=\"$conv_opt_name_site_name\" name=\"" . $conv_opt_name . "[$conv_opt_name_site_name]\" value=\"$site_name\" /><p class=\"description\">This is the site name you set up on our website <a href=\"http://www.theburn-zone.com/signin?redirect=/admin\" target=\"_blank\" title=\"BurnZone Commenting sign-up page\">after signing up</a>.</p>";
+  echo "<input type=\"text\" id=\"$conv_opt_name_site_name\" name=\"" . $conv_opt_name . "[$conv_opt_name_site_name]\" value=\"$site_name\" /><p class=\"description\">This is the name of your site which you <a href=\"" . CONVERSAIT_SERVER_HOST . "/auth/signin?redirect=/admin\" target=\"_blank\" title=\"BurnZone Commenting sign-up page\">register</a> at Burnzone.</p>";
 }
 
 function conv_settings_sso_title() {
@@ -118,7 +118,7 @@ function conv_settings_sso_title() {
 function conv_render_setting_sso_logo() {
   global $conv_opt_name_sso_logo, $conv_opt, $conv_opt_name;
   $sso_logo = $conv_opt[$conv_opt_name_sso_logo];
-  echo "<input type=\"text\" id=\"$conv_opt_name_sso_logo\" name=\"" . $conv_opt_name . "[$conv_opt_name_sso_logo]\" value=\"$sso_logo\" /><p class=\"description\">The image that you want to be visible in the login panel of BurnZone Commenting.</p>";
+  echo "<input type=\"text\" id=\"$conv_opt_name_sso_logo\" name=\"" . $conv_opt_name . "[$conv_opt_name_sso_logo]\" value=\"$sso_logo\" /><p class=\"description\">The url of the image to show in the login panel of Burnzone Commenting for the option to login with the credentials for your site.</p>";
 }
 
 
