@@ -3,7 +3,7 @@ Contributors: BurnZone
 Tags: comments, comment system, commenting system, commenting platform
 Requires at least: 3.0.5
 Tested up to: 3.5.2
-Stable tag: 0.3.3
+Stable tag: 0.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,27 +59,30 @@ For more information, you can always check our official help section that we're 
 
 == Changelog ==
 
+= 0.3.4 =
+* Added action link to the settings page.
+
 = 0.3.3 =
-* Fixed bug: widgets could not be moved in the admin area
+* Fixed bug: widgets could not be moved in the admin area.
 
 = 0.3.2 =
-* Corrected a link to our site
-* Minor changes to description texts
+* Corrected a link to our site.
+* Minor changes to description texts.
 
 = 0.3.1 =
-* Improved the settings page user experience
-* Added a nice timepicker addon on the settings page
-* Added a help note on the settings page
-* BurnZone Commenting is compatible with the latest WordPress version (3.5.2)
+* Improved the settings page user experience.
+* Added a nice timepicker addon on the settings page.
+* Added a help note on the settings page.
+* BurnZone Commenting is compatible with the latest WordPress version (3.5.2).
 
 We also recently improved the interface of our comment system.
 
 = 0.3 =
 * Can select for what post types to enable BurnZone (e.g. posts, pages).
-* Can select when to enable BurnZone
+* Can select when to enable BurnZone:
   * For all posts
   * When the comments are 'closed'
-  * For all posts created since a particular date.
+  * For all posts created since a particular date
 
 = 0.2 =
 * Pre 0.3 version, for beta partners and downloadable from our site only. It contains most of the things in 0.3.
@@ -93,7 +96,7 @@ We also recently improved the interface of our comment system.
 == Upgrade Notice ==
 
 = 0.3.1 =
-Improved the plugin settings page
+Improved the plugin settings page.
 
 = 0.3 =
 There are no known issues.
