@@ -4,7 +4,7 @@
 Plugin Name: BurnZone Commenting Wordpress Plugin
 Plugin URI: http://www.theburn-zone.com
 Description: Integrates the BurnZone commenting engine
-Version: 0.3.3
+Version: 0.3.4
 Author: The Burnzone team
 Author URI: http://www.theburn-zone.com
 License: GPL2
@@ -118,14 +118,14 @@ if (isset($site_name) and $site_name !== '') {
 */
 add_action( 'wp_dashboard_setup', 'conv_dashboard_widget' );
 function conv_dashboard_widget() {
-    add_meta_box(
-        'conv-dashboard-widget',
-        'BurnZone Commenting Widget',
-        'conv_dashboard_content',
-        'dashboard',
-        'normal',
-        'high'
-    );
+  add_meta_box(
+    'conv-dashboard-widget',
+    'BurnZone Commenting Widget',
+    'conv_dashboard_content',
+    'dashboard',
+    'normal',
+    'high'
+  );
 }
 
 function conv_dashboard_content(){
@@ -137,6 +137,26 @@ function conv_dashboard_content(){
   <iframe src="<?php echo CONVERSAIT_LOGIN_ROOT . "/signin?redirect=" . urlencode("/admin/moderator?embed=true&site=" . $site_name); ?>" style="width:100%; min-height:500px;"></iframe>
   </div>
 <?php }
+
+/*
+* Add a settings link 
+*/
+function conv_plugin_action_links($links, $file) {
+  static $this_plugin;
+  if (!$this_plugin) {
+    $this_plugin = plugin_basename(__FILE__);
+  } 
+  // check to make sure we are on the correct plugin
+  if ($file == $this_plugin) {
+    // the anchor tag and href to the URL we want. For a "Settings" link, this needs to be the url of your settings page
+    $settings_link = '<a href="' . get_bloginfo('wpurl') . '/wp-admin/options-general.php?page=conversait">Settings</a>';
+    // add the link to the list
+    array_unshift($links, $settings_link);
+  }
+  return $links;
+}
+
+add_filter('plugin_action_links', 'conv_plugin_action_links', 10, 2);
 
 /**
 * Allow redirects to external sites
