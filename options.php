@@ -67,6 +67,7 @@
   define('CONVERSAIT_SERVER_HOST', 'http://www.theburn-zone.com');
   define('CONVERSAIT_DOMAIN', 'theburn-zone.com');
   define('CONVERSAIT_LOGIN_ROOT', 'http://www.theburn-zone.com/auth');
+  define('CONVERSAIT_CDN_ROOT', 'http://cdn.theburn-zone.com/web');
 
   if (file_exists(CONVERSAIT_PATH . 'site.php')) {
     include(CONVERSAIT_PATH . 'site.php');
