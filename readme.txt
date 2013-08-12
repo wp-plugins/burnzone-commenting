@@ -2,8 +2,8 @@
 Contributors: BurnZone
 Tags: comments, comment system, commenting system, commenting platform
 Requires at least: 3.0.5
-Tested up to: 3.5.2
-Stable tag: 0.3.5
+Tested up to: 3.6
+Stable tag: 0.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,11 +43,15 @@ To be able to use Single Sign On you will have to download the plugin again from
 
 == Frequently Asked Questions ==
 
-= Why can't I see any change in the comments template after activating the plugin? =
+= Why does BurnZone say that it could not load the conversation? =
 
-At the moment, this commenting platform will be active only for the posts you publish AFTER activating the plugin. So your old comments won't be changed, only the new ones.
+There are two main reasons for this error:
+1. You are trying to load an article from localhost. We only support articles that are publicly available.
+2. You did not configure the plugin. Please register a site at BurnZone and set the site name in the plugin options.
 
-For more information, you can always check our official help section that we're constantly improving.
+= Why is the text not readable? =
+
+Our automatic theme engine selected the wrong theme. Go to [BurnZone settings](http://www.theburn-zone.com) and manually select the theme that matches your design.
 
 == Screenshots ==
 
@@ -58,6 +62,10 @@ For more information, you can always check our official help section that we're 
 5. Single question screen. Every question can be answered and every answer can be commented.
 
 == Changelog ==
+
+= 0.4.0 =
+* Updated urls to JavaScript files. You are strongly advised to upgrade to this version.
+* Banner.
 
 = 0.3.5 =
 * Changed links to js files.
@@ -97,6 +105,9 @@ We also recently improved the interface of our comment system.
 * Beta release
 
 == Upgrade Notice ==
+
+= 0.4.0 =
+Users are strongly advised to upgrade to this version.
 
 = 0.3.1 =
 Improved the plugin settings page.
