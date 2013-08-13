@@ -7,6 +7,7 @@
 <script type="text/javascript">
   var conversait_sitename = "' . $conv_opt[$conv_opt_name_site_name] . '";
   var conversait_id = "' . $post->ID . '";
+  var conversait_uri = "' . get_permalink($post->ID) . '";
   (function() {
     var conversait = document.createElement("script"); 
     conversait.type = "text/javascript"; 
