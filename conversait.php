@@ -4,7 +4,7 @@
 Plugin Name: BurnZone Commenting Wordpress Plugin
 Plugin URI: http://www.theburn-zone.com
 Description: Integrates the BurnZone commenting engine
-Version: 0.3.5
+Version: 0.4.2
 Author: The Burnzone team
 Author URI: http://www.theburn-zone.com
 License: GPL2
@@ -45,10 +45,12 @@ function should_replace_comments($post) {
   $post_time = strtotime($post->post_date);
   if ($conv_opt[$conv_opt_name_enabledfor][$post->post_type] !== "1")
     return false;
-  if ($conv_opt[$conv_opt_name_activation_type] === "all")
-    return true;
   if ($conv_opt[$conv_opt_name_activation_type] === "wpcomments_closed")
     return ($post->comment_status === "closed");
+  else if ($post->comment_status === "closed")
+    return false;
+  if ($conv_opt[$conv_opt_name_activation_type] === "all")
+    return true;
   if ($conv_opt[$conv_opt_name_activation_type] === "since") {
     if ($post_time >= $conv_opt[$conv_opt_name_activation_date])
       return true;
@@ -93,7 +95,7 @@ function conv_comments_number($output) {
 }
 
 function conv_enqueue_scripts() {
-  wp_enqueue_script('convcommentscount', CONVERSAIT_CDN_ROOT . '/js/counts.js');
+  wp_enqueue_script('convcommentscount', CONVERSAIT_SERVER_HOST . '/web/js/counts.js', array(), null);
 }
 
 function conv_head() {
