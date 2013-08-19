@@ -55,11 +55,11 @@ Our automatic theme engine selected the wrong theme. Go to [BurnZone settings](h
 
 == Screenshots ==
 
-1. This is how our commenting system looks (comments section) on a page.
-2. Challenges tab. Here are listed all the challenges.
-3. Single challenge screen. This is how it looks when someone challenges another person.
-4. Questions tab. Here are listed all the questions.
-5. Single question screen. Every question can be answered and every answer can be commented.
+1. Our comment system enables users to call-out and challenge comments with which they disagree, creating a competitive sub-discussion within regular comments.
+2. Ask questions to the community and get credit for providing the best answer.
+3. Earn credibility in your community on our "Leaderboard" for participation and successful comments, challenges and answers to questions.
+4. The light theme
+5. The dark theme
 
 == Changelog ==
 
