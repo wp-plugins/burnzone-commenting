@@ -4,7 +4,7 @@
 Plugin Name: BurnZone Commenting Wordpress Plugin
 Plugin URI: http://www.theburn-zone.com
 Description: Integrates the BurnZone commenting engine
-Version: 0.4.2
+Version: 0.4.4
 Author: The Burnzone team
 Author URI: http://www.theburn-zone.com
 License: GPL2
@@ -36,7 +36,7 @@ $conv_opt = conv_ensure_options();
 /*
 * Function to check whether to replace the default commenting platform or not.
 */
-function should_replace_comments($post) {
+function conv_should_replace_comments($post) {
   global $conv_opt_name_enabledfor, 
     $conv_opt_name_activation_type, $conv_opt_name_activation_date, //activation
     $conv_opt;
@@ -48,6 +48,8 @@ function should_replace_comments($post) {
   if ($conv_opt[$conv_opt_name_activation_type] === "wpcomments_closed")
     return ($post->comment_status === "closed");
   else if ($post->comment_status === "closed")
+    return false;
+  if ($post->post_status !== "publish" && $post->post_status !== "private")
     return false;
   if ($conv_opt[$conv_opt_name_activation_type] === "all")
     return true;
@@ -63,7 +65,7 @@ function should_replace_comments($post) {
 */
 function conv_comments_template($file) {
   global $post;
-  if (should_replace_comments($post))
+  if (conv_should_replace_comments($post))
     return CONVERSAIT_PATH . 'comments.php';
   return $file;
 }
@@ -74,22 +76,22 @@ function conv_comments_template($file) {
 */
 function conv_comments_open($open, $post_id = null) {
   $post = get_post($post_id);
-  if (!$open && should_replace_comments($post) && !is_admin())
+  if (!$open && conv_should_replace_comments($post) && !is_admin())
     $open = true;
   return $open;
 }
 
 function conv_get_comments_number($count, $post_id = null) {
   $post = get_post($post_id);
-  if (should_replace_comments($post))
+  if (conv_should_replace_comments($post))
     return 0;
   return $count;
 }
 
 function conv_comments_number($output) {
   global $post;
-  if (should_replace_comments($post))
-    return '<span data-conversation-id="' . $post->ID . '" data-conversation-url="' . get_permalink($post->ID) . '"></span>';
+  if (conv_should_replace_comments($post))
+    return '<span data-conversation-id="' . conv_unique_post_id($post->ID) . '" data-conversation-url="' . get_permalink($post->ID) . '"></span>';
   else
     return $output;
 }
@@ -102,6 +104,17 @@ function conv_head() {
   global $conv_opt_name_site_name, $conv_opt;
   $site_name = $conv_opt[$conv_opt_name_site_name];
   echo '<script type="text/javascript">var conversait_sitename = "' . $site_name . '";</script>';
+}
+
+/**
+* We have to make sure that when multisite is activated the post id is globally unique.
+*/
+function conv_unique_post_id($post_id) {
+  global $blog_id, $conv_opt, $conv_opt_name_def_blog_id;
+  if (is_multisite())
+    return $blog_id . "-" . $post_id;
+  else
+    return $post_id;
 }
 
 $site_name = $conv_opt[$conv_opt_name_site_name];
@@ -136,7 +149,7 @@ function conv_dashboard_content(){
   ?>
 
   <div class="wrap">
-  <iframe src="<?php echo CONVERSAIT_LOGIN_ROOT . "/signin?redirect=" . urlencode("/admin/moderator?embed=true&site=" . $site_name); ?>" style="width:100%; min-height:500px;"></iframe>
+  <iframe src="<?php echo "http://" . $site_name . "." . CONVERSAIT_DOMAIN_PORT . "/admin/moderator?embed=true"; ?>" style="width:100%; min-height:500px;"></iframe>
   </div>
 <?php }
 

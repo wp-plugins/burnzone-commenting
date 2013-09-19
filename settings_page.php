@@ -1,19 +1,19 @@
 <?php
 
 // create custom plugin settings menu
-add_action('admin_menu', 'create_menu');
+add_action('admin_menu', 'conv_create_menu');
 
 //call register settings function
 add_action('admin_init', 'conv_register_settings');
 
-function create_menu() {
+function conv_create_menu() {
   //create new top-level menu
   add_options_page('BurnZone Commenting Plugin Settings', 'BurnZone Settings', 'administrator', 'conversait', 'conv_settings_page');
   add_options_page('BurnZone Moderator', 'BurnZone Moderator', 'administrator', 'conversait_mod', 'conv_mod_page');
 }
 
 function conv_register_settings() {
-  global $conv_opt_name_site_name, $conv_opt_name_sso_logo, $conv_opt_name_enabledfor, $conv_opt_name;
+  global $conv_opt_name_site_name, $conv_opt_name_sso_logo, $conv_opt_name_sso_key, $conv_opt_name_enabledfor, $conv_opt_name;
   //register our settings
   register_setting('conv_settings_group', $conv_opt_name, 'conv_validate_settings');
   
@@ -24,6 +24,7 @@ function conv_register_settings() {
 
   add_settings_section('conv_settings_sso', 'Single Sign On', 'conv_settings_sso_title', 'conversait');
   add_settings_field($conv_opt_name_sso_logo, 'Logo', 'conv_render_setting_sso_logo', 'conversait', 'conv_settings_sso', array( 'label_for' => $conv_opt_name_sso_logo));
+  add_settings_field($conv_opt_name_sso_key, 'Key', 'conv_render_setting_sso_key', 'conversait', 'conv_settings_sso', array( 'label_for' => $conv_opt_name_sso_key));
 
 }
 
@@ -116,9 +117,14 @@ function conv_render_setting_sso_logo() {
   echo "<input type=\"text\" id=\"$conv_opt_name_sso_logo\" name=\"" . $conv_opt_name . "[$conv_opt_name_sso_logo]\" value=\"$sso_logo\" /><p class=\"description\">The url of the image to show in the login panel of Burnzone Commenting for the option to login with the credentials for your site.</p>";
 }
 
+function conv_render_setting_sso_key() {
+  global $conv_opt_name_sso_key, $conv_opt, $conv_opt_name;
+  $sso_key = $conv_opt[$conv_opt_name_sso_key];
+  echo "<input type=\"text\" id=\"$conv_opt_name_sso_key\" name=\"" . $conv_opt_name . "[$conv_opt_name_sso_key]\" value=\"$sso_key\" /><p class=\"description\">Your unique SSO key.</p>";
+}
 
 function conv_validate_settings($options) {
-  global $conv_opt_name_site_name, $conv_opt_name_sso_logo, $conv_opt_name_enabledfor, 
+  global $conv_opt_name_site_name, $conv_opt_name_sso_logo, $conv_opt_name_sso_key, $conv_opt_name_enabledfor, 
    $conv_opt, $conv_opt_name_activation_type, $conv_opt_name_activation_date;
 
   $newOptions = array_merge(array(), (array)$conv_opt);
@@ -127,6 +133,11 @@ function conv_validate_settings($options) {
   * sso logo
   */
   $newOptions[$conv_opt_name_sso_logo] = $options[$conv_opt_name_sso_logo];
+
+  /*
+  * sso key
+  */
+  $newOptions[$conv_opt_name_sso_key] = $options[$conv_opt_name_sso_key];
 
   /*
   * site name
@@ -192,6 +203,6 @@ function conv_mod_page() {
 
 <div class="wrap">
 <h2>BurnZone Commenting Moderator</h2>
-<iframe src="<?php echo CONVERSAIT_LOGIN_ROOT . "/signin?redirect=" . urlencode("/admin/moderator?embed=true&site=" . $site_name); ?>" style="width:100%; min-height:650px;"></iframe>
+<iframe src="<?php echo "http://" . $site_name . "." . CONVERSAIT_DOMAIN_PORT . "/admin/moderator?embed=true"; ?>" style="width:100%; min-height:650px;"></iframe>
 </div>
 <?php } ?>

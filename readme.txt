@@ -3,7 +3,7 @@ Contributors: BurnZone
 Tags: comments, comment system, commenting system, commenting platform
 Requires at least: 3.0.5
 Tested up to: 3.6
-Stable tag: 0.4.2
+Stable tag: 0.4.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,7 +39,9 @@ This section describes how to install the plugin and get it working.
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Fill in the details in the BurnZone settings and you're done! Your new comments will take benefit from this commenting platform.
 
-To be able to use Single Sign On you will have to download the plugin again from BurnZone public site.
+To be able to use Single Sign On your site, do one of these:
+- Paste the SSO key from the BurnZone admin section into the SSO key field on our plugin settings page. 
+- Or you can simply download this WordPress plugin directly from our BurnZone public site.
 
 == Frequently Asked Questions ==
 
@@ -62,6 +64,13 @@ Our automatic theme engine selected the wrong theme. Go to [BurnZone settings](h
 5. The dark theme
 
 == Changelog ==
+
+= 0.4.4 =
+* Can configure the SSO key field on the Settings page.
+* Other minor fixes.
+
+= 0.4.3 =
+* Added support for Wordpress 3 multisite.
 
 = 0.4.2 =
 * Not showing the comments when they are closed except when the plugin is configured to do so.
@@ -110,6 +119,9 @@ We also recently improved the interface of our comment system.
 * Beta release
 
 == Upgrade Notice ==
+
+= 0.4.3 =
+If you activate multisite and there are already BurnZone conversations created for your site, then those conversations will not show up. They will be replaced by new ones. In this case, contact us for support and we will migrate your conversations.
 
 = 0.4.0 =
 Users are strongly advised to upgrade to this version.
