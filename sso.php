@@ -1,7 +1,7 @@
 <?php
 
-  function buildSSOString() {
-    global $current_user;
+  function conv_build_sso_string() {
+    global $current_user, $conv_opt, $conv_opt_name_sso_key;
     get_currentuserinfo();
     if ($current_user->ID) {
       $data = array(
@@ -15,11 +15,11 @@
     }
     $message = base64_encode(json_encode($data));
     $timestamp = time();
-    $hmac = hash_hmac('sha1', "$message $timestamp", CONVERSAIT_SITE_SECRET);
+    $hmac = hash_hmac('sha1', "$message $timestamp", $conv_opt[$conv_opt_name_sso_key]);
     return "$message $hmac $timestamp";
   }
 
-  function buildSSOOptions() {
+  function conv_build_sso_options() {
     global $conv_opt_name_sso_logo, $conv_opt;
     $data = array(
       'logo' => $conv_opt[$conv_opt_name_sso_logo],
@@ -30,7 +30,8 @@
   }
 
   function ssoEnabled() {
-    return defined('CONVERSAIT_SITE_SECRET');
+    global $conv_opt, $conv_opt_name_sso_key;
+    return isset($conv_opt[$conv_opt_name_sso_key]) && $conv_opt[$conv_opt_name_sso_key] !== '';
   }
 
 ?>
