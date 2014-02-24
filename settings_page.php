@@ -13,12 +13,12 @@ function conv_create_menu() {
 }
 
 function conv_register_settings() {
-  global $conv_opt_name_site_name, $conv_opt_name_sso_logo, $conv_opt_name_sso_key, $conv_opt_name_enabledfor, $conv_opt_name;
+  global $conv_opt_name_site_name, $conv_opt_name_sso_logo, $conv_opt_name_sso_key, $conv_opt_name_enabledfor, $conv_opt_name, $conv_opt_name_activation_type;
   //register our settings
   register_setting('conv_settings_group', $conv_opt_name, 'conv_validate_settings');
   
   add_settings_section('conv_settings_main', 'Main settings', 'conv_settings_main_title', 'conversait');
-  add_settings_field($conv_opt_name_activation, 'Activated for', 'conv_render_setting_activation', 'conversait', 'conv_settings_main');
+  add_settings_field($conv_opt_name_activation_type, 'Activated for', 'conv_render_setting_activation', 'conversait', 'conv_settings_main');
   add_settings_field($conv_opt_name_site_name, 'Site Name', 'conv_render_setting_site_name', 'conversait', 'conv_settings_main', array( 'label_for' => $conv_opt_name_site_name));
   add_settings_field($conv_opt_name_enabledfor, 'Enable options', 'conv_render_settings_enabledfor', 'conversait' , 'conv_settings_main');
 
@@ -37,7 +37,7 @@ function conv_render_settings_enabledfor() {
   $posttypes = get_post_types();
   foreach ($posttypes as $key => $value) { 
     $checked = "";
-    if ($conv_opt[$conv_opt_name_enabledfor][$key] === "1")
+    if (array_key_exists($key, $conv_opt[$conv_opt_name_enabledfor]) && $conv_opt[$conv_opt_name_enabledfor][$key] === "1")
       $checked = 'checked="true"';
   ?>
     <div>
