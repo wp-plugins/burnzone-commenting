@@ -4,7 +4,7 @@
 Plugin Name: BurnZone Commenting Wordpress Plugin
 Plugin URI: http://www.theburn-zone.com
 Description: Integrates the BurnZone commenting engine
-Version: 0.4.5
+Version: 0.8.0
 Author: The Burnzone team
 Author URI: http://www.theburn-zone.com
 License: GPL2
@@ -13,7 +13,7 @@ License: GPL2
 /*  Copyright 2012  theburn-zone.com  (email : info@theburn-zone.com)
 
     This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License, version 2, as 
+    it under the terms of the GNU General Public License, version 2, as
     published by the Free Software Foundation.
 
     This program is distributed in the hope that it will be useful,
@@ -37,7 +37,7 @@ $conv_opt = conv_ensure_options();
 * Function to check whether to replace the default commenting platform or not.
 */
 function conv_should_replace_comments($post) {
-  global $conv_opt_name_enabledfor, 
+  global $conv_opt_name_enabledfor,
     $conv_opt_name_activation_type, $conv_opt_name_activation_date, //activation
     $conv_opt;
   if (is_null($post))
@@ -71,7 +71,7 @@ function conv_comments_template($file) {
 }
 
 /**
-* If comment_status == 'closed' then Wordpress does not call 'comments_number'. We can't display the number of comments if 
+* If comment_status == 'closed' then Wordpress does not call 'comments_number'. We can't display the number of comments if
 * the plugin is enabled for posts with comment_status == 'closed'. This hook overrides comments_open when we're not in admin mode.
 */
 function conv_comments_open($open, $post_id = null) {
@@ -154,13 +154,13 @@ function conv_dashboard_content(){
 <?php }
 
 /*
-* Add a settings link 
+* Add a settings link
 */
 function conv_plugin_action_links($links, $file) {
   static $this_plugin;
   if (!$this_plugin) {
     $this_plugin = plugin_basename(__FILE__);
-  } 
+  }
   // check to make sure we are on the correct plugin
   if ($file == $this_plugin) {
     // the anchor tag and href to the URL we want. For a "Settings" link, this needs to be the url of your settings page

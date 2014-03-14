@@ -6,6 +6,177 @@ add_action('admin_menu', 'conv_create_menu');
 //call register settings function
 add_action('admin_init', 'conv_register_settings');
 
+//add stuff in head
+add_action('admin_head', 'conv_set_head');
+
+//intercept requests made with jquery
+add_action('init', 'conv_intercept_request');
+
+$conv_actions = array(
+  'export-comment' => 'conv_export_from_wp',
+  'import-comment' => 'conv_import_to_wp',
+);
+
+function conv_intercept_request() {
+  global $conv_actions;
+  $action = isset($_GET['conv_action']) ? $_GET['conv_action'] : '';
+  if (!empty($action) and !empty($conv_actions[$action])) {
+    call_user_func($conv_actions[$action]);
+    die();
+  }
+}
+
+function conv_get_all_comments($post) {
+  global $wpdb;
+
+  $comments = $wpdb->get_results($wpdb->prepare(
+    "SELECT
+      comment_ID AS id,
+      comment_author AS author,
+      comment_author_email AS email,
+      comment_date_gmt AS date_gmt,
+      comment_content AS content,
+      comment_karma AS votes,
+      comment_approved AS approved,
+      comment_parent AS parent_id,
+      user_id AS user_id
+    FROM $wpdb->comments
+    WHERE
+      comment_post_ID = %d AND
+      comment_agent NOT LIKE 'Burnzone/%%'",
+    $post->post_id));
+
+  # update IDs to be unique
+  foreach ($comments as $c) {
+    $c->id = conv_unique_post_id($c->id);
+    $c->parent_id = conv_unique_post_id($c->parent_id);
+    $c->user_id = conv_unique_post_id($c->user_id);
+  }
+
+  return $comments;
+}
+
+function conv_get_next_post($post_id) {
+  global $wpdb;
+
+  $posts = $wpdb->get_results($wpdb->prepare(
+    "SELECT
+      ID AS post_id,
+      post_name AS name,
+      comment_status AS status
+    FROM $wpdb->posts
+    WHERE
+      post_type != 'revision' AND
+      post_status = 'publish' AND
+      comment_count > 0 AND
+      id > %d
+    ORDER BY
+      id ASC
+    LIMIT 1
+    ", $post_id));
+
+  if (empty($posts)) {
+    return null;
+  }
+
+  $p = $posts[0];
+  $p->id = conv_unique_post_id($p->post_id);
+  $p->uri = get_permalink($p->post_id);
+  $p->comments = conv_get_all_comments($p);
+  return $p;
+}
+
+function conv_sign_message($data) {
+  global $conv_opt, $conv_opt_name_sso_key;
+
+  $message = array(
+    'sha1' => sha1($data)
+  );
+  $message = base64_encode(json_encode($message));
+  $timestamp = time();
+  $hmac = hash_hmac('sha1', "$message $timestamp", $conv_opt[$conv_opt_name_sso_key]);
+  return "$message $hmac $timestamp";
+}
+
+function conv_import_on_burnzone($post) {
+  $http = new WP_Http();
+  $data = json_encode($post);
+  $auth = conv_sign_message($data);
+  $response = $http->request(
+    "http://" . CONVERSAIT_DOMAIN_PORT . "/api/sites/$post->site/import",
+    array(
+      'method' => 'POST',
+      'body' => array(
+        'auth' => $auth,
+        'data' => $data
+      )
+    )
+  );
+
+  $data = (array) json_decode($response['body']);
+  if (!$data) {
+    $data = array(
+      'status' => 'fail',
+      'message' => 'Burnzone Internal Server Error'
+    );
+  }
+
+  return $data;
+}
+
+function conv_export_from_wp() {
+  global $conv_opt;
+  global $conv_opt_name_site_name;
+  global $conv_opt_name_sso_key;
+
+  $post_id = intval($_GET['post_id']);
+  $timestamp = intval($_GET['timestamp']);
+
+  $result = 'success';
+  $msg = "Exported conversation $post_id&hellip;";
+  $timestamp = time();
+  $status = 'complete';
+
+  if (empty($conv_opt[$conv_opt_name_sso_key])) {
+    $result = 'fail';
+    $msg = 'Please add a SSO key';
+  } else if (current_user_can('manage_options')) {
+    global $wpdb, $dsq_api;
+    $post = conv_get_next_post($post_id);
+    if ($post != null) {
+      $status = 'partial';
+      $post->site = $conv_opt[$conv_opt_name_site_name];
+
+      $resp = conv_import_on_burnzone($post);
+      $result = $resp['status'];
+
+      if ($result == 'success') {
+        $msg = "Exported conversation $post_id&hellip;";
+        $post_id = $post->post_id;
+      } else {
+        $msg = isset($resp['message']) ? $resp['message'] : 'Unknown error';
+      }
+    } else {
+      $msg = "Finished";
+    }
+  } else {
+    $result = 'fail';
+    $msg = 'You are not authorized to export comments';
+  }
+
+  $response = compact('result', 'status', 'msg', 'post_id', 'timestamp');
+  header('Content-type: text/javascript');
+
+  echo json_encode($response);
+}
+
+function conv_import_to_wp() {
+}
+
+function conv_set_head() {
+  echo "<script type='text/javascript'>wp_index_url = '". admin_url('index.php') ."';</script>";
+}
+
 function conv_create_menu() {
   //create new top-level menu
   add_options_page('BurnZone Commenting Plugin Settings', 'BurnZone Settings', 'administrator', 'conversait', 'conv_settings_page');
@@ -16,11 +187,12 @@ function conv_register_settings() {
   global $conv_opt_name_site_name, $conv_opt_name_sso_logo, $conv_opt_name_sso_key, $conv_opt_name_enabledfor, $conv_opt_name, $conv_opt_name_activation_type;
   //register our settings
   register_setting('conv_settings_group', $conv_opt_name, 'conv_validate_settings');
-  
+
   add_settings_section('conv_settings_main', 'Main settings', 'conv_settings_main_title', 'conversait');
   add_settings_field($conv_opt_name_activation_type, 'Activated for', 'conv_render_setting_activation', 'conversait', 'conv_settings_main');
   add_settings_field($conv_opt_name_site_name, 'Site Name', 'conv_render_setting_site_name', 'conversait', 'conv_settings_main', array( 'label_for' => $conv_opt_name_site_name));
   add_settings_field($conv_opt_name_enabledfor, 'Enable options', 'conv_render_settings_enabledfor', 'conversait' , 'conv_settings_main');
+  add_settings_field('conv_name_export', 'Export', 'conv_render_settings_export', 'conversait' , 'conv_settings_main');
 
   add_settings_section('conv_settings_sso', 'Single Sign On', 'conv_settings_sso_title', 'conversait');
   add_settings_field($conv_opt_name_sso_logo, 'Logo', 'conv_render_setting_sso_logo', 'conversait', 'conv_settings_sso', array( 'label_for' => $conv_opt_name_sso_logo));
@@ -32,10 +204,10 @@ function conv_register_settings() {
 * Enabling the commenting platform based on post type.
 */
 
-function conv_render_settings_enabledfor() { 
+function conv_render_settings_enabledfor() {
   global $conv_opt, $conv_opt_name_enabledfor, $conv_opt_name;
   $posttypes = get_post_types();
-  foreach ($posttypes as $key => $value) { 
+  foreach ($posttypes as $key => $value) {
     $checked = "";
     if (array_key_exists($key, $conv_opt[$conv_opt_name_enabledfor]) && $conv_opt[$conv_opt_name_enabledfor][$key] === "1")
       $checked = 'checked="true"';
@@ -44,9 +216,18 @@ function conv_render_settings_enabledfor() {
       <input type="checkbox" name="<?php echo $conv_opt_name . "[$conv_opt_name_enabledfor]" ?>[]" value="<?php echo $key ?>" <?php echo $checked ?> id="conv_opt_<?php echo $key ?>"/>
       <label for="conv_opt_<?php echo $key ?>"><?php echo $value ?></label>
     </div>
-  <?php 
+  <?php
   } ?>
   <p class="description">Type of posts where you want the commenting system to be activated.</p>
+  <?php
+}
+
+function conv_render_settings_export() {
+  ?>
+    <div id="conv-export-comments">
+      <a href="#" class="button">Export comments</a><span id="conv-export-loading"></span><span id="conv-export-status" class="status"></span>
+    </div>
+    <p class="description">Export existing Wordpress comments to Burnzone (you need a valid SSO key)</p>
   <?php
 }
 
@@ -55,12 +236,13 @@ function conv_settings_main_title() {
 }
 
 /*
-* Loading the timepicker addon dependencies. 
+* Loading the timepicker addon dependencies.
 * http://trentrichardson.com/examples/timepicker/
 */
 
 function conv_load_scripts_styles(){
   wp_register_style('settings-page-style', plugin_dir_url(__FILE__ ) . 'assets/css/settings_page.css');
+  wp_register_style('font-awesome-style', plugin_dir_url(__FILE__ ) . 'assets/css/font-awesome.min.css');
   wp_register_style('jquery-ui-timepicker', plugin_dir_url(__FILE__ ) . 'assets/css/jquery-ui-timepicker-addon.css');
   wp_register_style('jquery-ui-smoothness', plugin_dir_url(__FILE__ ) . 'assets/css/jquery-ui-smoothness/jquery-ui-1.10.2.custom.min.css');
   //wp_register_script('jquery-ui-slider_access', plugin_dir_url(__FILE__ ) . 'assets/js/jquery-ui-sliderAccess.js', array('jquery-ui-slider'));
@@ -69,6 +251,7 @@ function conv_load_scripts_styles(){
   wp_enqueue_style('jquery-ui-timepicker');
   wp_enqueue_style('jquery-ui-smoothness');
   wp_enqueue_style('settings-page-style');
+  wp_enqueue_style('font-awesome-style');
   wp_enqueue_script('jquery-ui-timepicker');
   // wp_enqueue_script('jquery-ui-slider_access');
   wp_enqueue_script('conv-admin-scripts');
@@ -124,7 +307,7 @@ function conv_render_setting_sso_key() {
 }
 
 function conv_validate_settings($options) {
-  global $conv_opt_name_site_name, $conv_opt_name_sso_logo, $conv_opt_name_sso_key, $conv_opt_name_enabledfor, 
+  global $conv_opt_name_site_name, $conv_opt_name_sso_logo, $conv_opt_name_sso_key, $conv_opt_name_enabledfor,
    $conv_opt, $conv_opt_name_activation_type, $conv_opt_name_activation_date;
 
   $newOptions = array_merge(array(), (array)$conv_opt);
@@ -153,7 +336,7 @@ function conv_validate_settings($options) {
   $posttypes = get_post_types();
   $newEnabledfor = array();
   $enabledfor = $options[$conv_opt_name_enabledfor];
-  for ($i=0; $i < count($enabledfor); $i++) { 
+  for ($i=0; $i < count($enabledfor); $i++) {
     if ($posttypes[$enabledfor[$i]])
       $newEnabledfor[$enabledfor[$i]] = "1";
   }
@@ -188,7 +371,7 @@ function conv_settings_page() {
 <form method="post" action="options.php">
   <?php settings_fields('conv_settings_group'); ?>
   <?php do_settings_sections('conversait'); ?>
-  
+
   <?php submit_button(); ?>
 
 </form>
@@ -206,3 +389,4 @@ function conv_mod_page() {
 <iframe src="<?php echo "http://" . $site_name . "." . CONVERSAIT_DOMAIN_PORT . "/admin/moderator?embed=true"; ?>" style="width:100%; min-height:650px;"></iframe>
 </div>
 <?php } ?>
+

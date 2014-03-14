@@ -5,7 +5,7 @@
     get_currentuserinfo();
     if ($current_user->ID) {
       $data = array(
-        'id' => $current_user->ID,
+        'id' => conv_unique_post_id("$current_user->ID"),
         'name' => $current_user->display_name,
         'email' => $current_user->user_email
       );
