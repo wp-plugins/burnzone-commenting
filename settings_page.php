@@ -389,4 +389,3 @@ function conv_mod_page() {
 <iframe src="<?php echo "http://" . $site_name . "." . CONVERSAIT_DOMAIN_PORT . "/admin/moderator?embed=true"; ?>" style="width:100%; min-height:650px;"></iframe>
 </div>
 <?php } ?>
-
