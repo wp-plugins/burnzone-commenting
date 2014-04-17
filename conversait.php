@@ -4,7 +4,7 @@
 Plugin Name: BurnZone Commenting Wordpress Plugin
 Plugin URI: http://www.theburn-zone.com
 Description: Integrates the BurnZone commenting engine
-Version: 0.8.1
+Version: 0.8.2
 Author: The Burnzone team
 Author URI: http://www.theburn-zone.com
 License: GPL2
@@ -91,7 +91,7 @@ function conv_get_comments_number($count, $post_id = null) {
 function conv_comments_number($output) {
   global $post;
   if (conv_should_replace_comments($post))
-    return '<span data-conversation-id="' . conv_unique_post_id($post->ID) . '" data-conversation-url="' . get_permalink($post->ID) . '"></span>';
+    return '<span data-conversation-id="' . conv_unique_post_id($post->ID) . '" data-conversation-url="' . get_permalink($post->ID) . '" data-conversation-title="' . get_the_title($post->ID) . '"></span>';
   else
     return $output;
 }
@@ -104,6 +104,26 @@ function conv_head() {
   global $conv_opt_name_site_name, $conv_opt;
   $site_name = $conv_opt[$conv_opt_name_site_name];
   echo '<script type="text/javascript">var conversait_sitename = "' . $site_name . '";</script>';
+}
+
+/**
+* Always load the embed script. If there's no area to embed a BurnZone widget into then the embed script will bail.
+*/
+function conv_load_embed_script() {
+  global $conv_opt_name_site_name, $conv_opt;
+  $site_name = $conv_opt[$conv_opt_name_site_name];
+?>
+  <script type="text/javascript">
+    (function() {
+      var conversait_sitename = <?php echo '"' . $site_name . '"' ?>;
+      var conversait = document.createElement("script"); 
+      conversait.type = "text/javascript"; 
+      conversait.async = true;
+      conversait.src = <?php echo '"' . CONVERSAIT_SERVER_HOST . '/web/js/embed.js' . '"' ?>;
+      (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(conversait);
+    })();
+  </script>
+<?php
 }
 
 /**
@@ -126,6 +146,7 @@ if (isset($site_name) and $site_name !== '') {
   add_filter('comments_number', 'conv_comments_number', 20);
   add_action('wp_enqueue_scripts', 'conv_enqueue_scripts');
   add_action('wp_head', 'conv_head');
+  add_action('wp_footer', 'conv_load_embed_script');
 }
 
 /**

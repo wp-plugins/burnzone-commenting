@@ -16,6 +16,7 @@
   $conv_opt_name_sso_logo = 'conversait_sso_logo';
   $conv_opt_name_sso_key = 'conversait_sso_key'; //SSO KEY
   $conv_opt_name_enabledfor = 'conversait_post_type';
+  $conv_opt_name_forum_url = 'conversait_forum_url';
   $conv_opt_name = 'conversait_options';
   $conv_opt_name_activation_type = 'conversait_activation_type'; //activation
   $conv_opt_name_activation_date = 'conversait_activation_date'; //activation
