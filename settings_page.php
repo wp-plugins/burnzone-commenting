@@ -63,12 +63,12 @@ function conv_get_next_post($post_id) {
     "SELECT
       ID AS post_id,
       post_name AS name,
+      post_title AS title,
       comment_status AS status
     FROM $wpdb->posts
     WHERE
       post_type != 'revision' AND
       post_status = 'publish' AND
-      comment_count > 0 AND
       id > %d
     ORDER BY
       id ASC
@@ -192,6 +192,7 @@ function conv_register_settings() {
   add_settings_field($conv_opt_name_activation_type, 'Activated for', 'conv_render_setting_activation', 'conversait', 'conv_settings_main');
   add_settings_field($conv_opt_name_site_name, 'Site Name', 'conv_render_setting_site_name', 'conversait', 'conv_settings_main', array( 'label_for' => $conv_opt_name_site_name));
   add_settings_field($conv_opt_name_enabledfor, 'Enable options', 'conv_render_settings_enabledfor', 'conversait' , 'conv_settings_main');
+  add_settings_field($conv_opt_name_forum_url, 'Forum url', 'conv_render_settings_forum_url', 'conversait' , 'conv_settings_main');
   add_settings_field('conv_name_export', 'Export', 'conv_render_settings_export', 'conversait' , 'conv_settings_main');
 
   add_settings_section('conv_settings_sso', 'Single Sign On', 'conv_settings_sso_title', 'conversait');
@@ -229,6 +230,12 @@ function conv_render_settings_export() {
     </div>
     <p class="description">Export existing Wordpress comments to Burnzone (you need a valid SSO key)</p>
   <?php
+}
+
+function conv_render_settings_forum_url() {
+  global $conv_opt, $conv_opt_name_forum_url, $conv_opt_name;
+  $forum_url = $conv_opt[$conv_opt_name_forum_url];
+  echo "<input type=\"text\" id=\"$conv_opt_name_forum_url\" name=\"" . $conv_opt_name . "[$conv_opt_name_forum_url]\" value=\"$forum_url\" /><p class=\"description\">The url (permalink) of the page on your site where you want to embed a BurnZone forum instance. Leave blank if you don't want to use forums.</p>";
 }
 
 function conv_settings_main_title() {
@@ -308,7 +315,8 @@ function conv_render_setting_sso_key() {
 
 function conv_validate_settings($options) {
   global $conv_opt_name_site_name, $conv_opt_name_sso_logo, $conv_opt_name_sso_key, $conv_opt_name_enabledfor,
-   $conv_opt, $conv_opt_name_activation_type, $conv_opt_name_activation_date;
+   $conv_opt, $conv_opt_name_activation_type, $conv_opt_name_activation_date,
+   $conv_opt_name_forum_url;
 
   $newOptions = array_merge(array(), (array)$conv_opt);
 
@@ -341,6 +349,11 @@ function conv_validate_settings($options) {
       $newEnabledfor[$enabledfor[$i]] = "1";
   }
   $newOptions[$conv_opt_name_enabledfor] = $newEnabledfor;
+
+  /*
+  * forum url
+  */
+  $newOptions[$conv_opt_name_forum_url] = $options[$conv_opt_name_forum_url];
 
   /*
   * activation type
