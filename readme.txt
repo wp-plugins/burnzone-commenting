@@ -3,7 +3,7 @@ Contributors: BurnZone
 Tags: comments, comment system, commenting system, commenting platform
 Requires at least: 3.0.5
 Tested up to: 3.9
-Stable tag: 0.8.3
+Stable tag: 0.8.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,9 @@ Our automatic theme engine selected the wrong theme. Go to [BurnZone settings](h
 5. The dark theme
 
 == Changelog ==
+
+= 0.8.4 =
+* Fixed a bug with accessing the settings page.
 
 = 0.8.3 =
 * Fixed a bug with comment migration from Wordpress to BurnZone.

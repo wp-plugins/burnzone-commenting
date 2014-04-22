@@ -184,7 +184,9 @@ function conv_create_menu() {
 }
 
 function conv_register_settings() {
-  global $conv_opt_name_site_name, $conv_opt_name_sso_logo, $conv_opt_name_sso_key, $conv_opt_name_enabledfor, $conv_opt_name, $conv_opt_name_activation_type;
+  global $conv_opt_name_site_name, $conv_opt_name_sso_logo, $conv_opt_name_sso_key, 
+    $conv_opt_name_enabledfor, $conv_opt_name, $conv_opt_name_activation_type,
+    $conv_opt_name_forum_url;
   //register our settings
   register_setting('conv_settings_group', $conv_opt_name, 'conv_validate_settings');
 
