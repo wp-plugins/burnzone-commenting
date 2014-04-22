@@ -103,7 +103,7 @@ function conv_import_on_burnzone($post) {
   $data = json_encode($post);
   $auth = conv_sign_message($data);
   $response = $http->request(
-    "http://" . CONVERSAIT_DOMAIN_PORT . "/api/sites/$post->site/import",
+    CONVERSAIT_SERVER_HOST . "/api/sites/$post->site/import",
     array(
       'method' => 'POST',
       'body' => array(
