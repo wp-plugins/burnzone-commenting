@@ -1,69 +1,71 @@
-=== BurnZone Competitive Commenting ===
+=== BurnZone Forums & Commenting ===
 Contributors: BurnZone
-Tags: comments, comment system, commenting system, commenting platform
+Tags: comments, commenting system, community, commenting platform, forums, forum system, q&a
 Requires at least: 3.0.5
 Tested up to: 3.9
-Stable tag: 0.8.4
+Stable tag: 0.8.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin will embed the BurnZone Commenting system in your blog. It will definitely improve your readers' commenting experience!
+Upgrade your site with this BurnZone Forums & Commenting plugin. We replace standard WP Commenting & allow Forum installation on any page.
 
 == Description ==
 
-BurnZone Commenting is a fully customizable commenting platform that brings industry first competitive features in addition to all the standard commenting features. We have just released a fully functional BETA version and we would be happy to receive feedback.
+BurnZone Forums & Commenting is a turn key community platform that brings together commenting & forums under one roof.  We also include industry first community features designed to quantify and promote positive contributions. We have released a fully functional BETA version that we are continuing to improve. We are happy to receive feedback.
 
-Current features:
+= Current features for Both Forums & Comments: =
 
-* Challenges - Every comment on your posts can be challenged. In case someone doesn't agree with one's point of view, he or she can challenge that comment. Users will get a separate section where all the challenges will be displayed and where they can be voted (so there's always a winner) and commented.
-* Questions & answers - We actually do understand that comments are different from questions, so why not create separate sections? Questions are properly emphasized and have a better chance to be answered.
-* Multiple login options - Commentators can either use a Facebook account, an account on our website or even their account on your website using our Single Sign On.
-* Votes & likes - Comments and answers can be liked. Votes appear in challenges. Users get points based on the votes they get. Try hard to get points to be able to spend them on challenges (yes they cost points!) and spawn interesting debates.
-* User profiles - Every person commenting on your website will get a profile where the points are stored.
-* Sharing - sharing is caring. Users can always share on Twitter and Facebook comments, challenges, questions, answers or even an entire conversation.
+* Real Time - Conversations happen live.
+* Rich Media - Insert Images, Videos, & Social media directly into your posts.
+* Challenges - Any comment can be challenged by a commenter with a differing opinion. Challenges provide accountability to users that can have controversial opinions and surface what side of a topic a majority of people agree with.
+* Questions & Answers - We understand that comments are different from questions and we have designed our interface to support each activity separately.
+* SSO & Social Media login options - Leverage a variety of options to allow your community to login and create an identitiy.
+* Votes, likes & dislikes - Comments and answers can be liked and disliked.  In challenges vote for which side of the topic you agree with.
+* User profiles - Every person commenting on your website will get a profile where the comments and points are stored.
+* Sharing - Users can share BurnZone content to Twitter and Facebook or share directly to friends via email.
+* Competitions - Drive engagement to your community by rewarding the top contibutors with Prizes and Give-aways for a set period of time.
+* Moderation - You can moderate users and content through the "BurnZone Moderator" area in your dashboard.
+* Language Support - We have just launched support for 10 languages.
 
-You can easily moderate the activity through "BurnZone Moderator" area in your dashboard.
+= Support & Documentation: =
 
-Please let us know about any kind of recommendation you might have or any issue you come across.
-
-How does this plugin work?
-
-Simply put, what this plugin does is replacing your default comments template with an iframe. This will load its content (including comments) from an external source, meaning our servers. This brings you another benefit, which is reducing your server load.
+Reach out to us and get help through our site: http://help.theburn-zone.com/.  During USA business hours we will try to respond immediately to your questions.
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
+= Basic Outline =
 
-1. Upload the plugin to your website either directly via the WordPress plugin directory or via FTP, copying the plugin folder to "/wp-content/plugins/".
-1. Register an account on BurnZone and add your site in the admin section on the website.
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Fill in the details in the BurnZone settings and you're done! Your new comments will take benefit from this commenting platform.
+1. Access the plug-in either by Signing up at: http://www.theburn-zone.com/signup or searching for BurnZone in the Plug-in Directory.
+2. Upload the plugin to your website either directly via the WordPress plugin directory or via FTP, copying the plugin folder to "/wp-content/plugins/".
+3. Activate the plugin through the 'Plugins' menu in WordPress.
+4. Register or sign-in via the Wordpress Admin or the BurnZone website. 
+5. Add your site in the admin section on the website. (the fields should pre-populate).
+6. Complete the details in the BurnZone settings and you're done!
 
-To be able to use Single Sign On your site, do one of these:
-- Paste the SSO key from the BurnZone admin section into the SSO key field on our plugin settings page. 
-- Or you can simply download this WordPress plugin directly from our BurnZone public site.
+* To Enable Forums visit the tab and create a Page in Wordpress where you can add the forum install script.
+* To be able to use Single Sign On your site check the box on the SSO Tab and specify and image URL for the login icon.
+
+More details can be found here:
+
+* Commenting -> http://help.theburn-zone.com/customer/portal/articles/1009471-how-to-install-the-platform-on-wordpress-
+* Forums -> http://help.theburn-zone.com/customer/portal/articles/1527370-how-to-install-forums
 
 == Frequently Asked Questions ==
 
-= Why does BurnZone say that it could not load the conversation? =
-
-There are two main reasons for this error:
-1. You are trying to load an article from localhost. We only support articles that are publicly available.
-2. You did not configure the plugin. Please register a site at BurnZone and set the site name in the plugin options.
-
-= Why is the text not readable? =
-
-Our automatic theme engine selected the wrong theme. Go to [BurnZone settings](http://www.theburn-zone.com) and manually select the theme that matches your design.
+Visit our support community -> http://help.theburn-zone.com/
 
 == Screenshots ==
 
 1. Our comment system enables users to call-out and challenge comments with which they disagree, creating a competitive sub-discussion within regular comments.
 2. Ask questions to the community and get credit for providing the best answer.
 3. Earn credibility in your community on our "Leaderboard" for participation and successful comments, challenges and answers to questions.
-4. The light theme
-5. The dark theme
+4. The light theme.
+5. The dark theme.
 
 == Changelog ==
+
+= 0.8.5 =
+* Changed plugin description.
 
 = 0.8.4 =
 * Fixed a bug with accessing the settings page.
