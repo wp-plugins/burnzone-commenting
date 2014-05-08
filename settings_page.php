@@ -133,7 +133,7 @@ function conv_export_from_wp() {
   $timestamp = intval($_GET['timestamp']);
 
   $result = 'success';
-  $msg = "Exported conversation $post_id&hellip;";
+  $msg = "Imported conversation $post_id&hellip;";
   $timestamp = time();
   $status = 'complete';
 
@@ -151,7 +151,7 @@ function conv_export_from_wp() {
       $result = $resp['status'];
 
       if ($result == 'success') {
-        $msg = "Exported conversation $post_id&hellip;";
+        $msg = "Imported conversation $post_id&hellip;";
         $post_id = $post->post_id;
       } else {
         $msg = isset($resp['message']) ? $resp['message'] : 'Unknown error';
@@ -174,19 +174,21 @@ function conv_import_to_wp() {
 }
 
 function conv_set_head() {
-  echo "<script type='text/javascript'>wp_index_url = '". admin_url('index.php') ."';</script>";
+  global $conv_opt_name_site_name, $conv_opt, $conv_opt_name;
+  $site_name = $conv_opt[$conv_opt_name_site_name];
+  echo "<script type='text/javascript'>wp_index_url = '". admin_url('index.php') ."'; bz_default_site = '$site_name'; bz_url = '". CONVERSAIT_SERVER_HOST ."'; self_name = '".get_bloginfo("name")."'; self_url = '".get_bloginfo("url")."';</script>";
 }
 
 function conv_create_menu() {
   //create new top-level menu
-  add_options_page('BurnZone Commenting Plugin Settings', 'BurnZone Settings', 'administrator', 'conversait', 'conv_settings_page');
+  add_options_page('BurnZone Commenting Plugin Settings', 'BurnZone Settings', 'administrator', 'conversait_frame', 'conv_frame_page');
+  //add_options_page('BurnZone Commenting Advanced Settings', 'BurnZone Advanced', 'administrator', 'conversait', 'conv_settings_page');
   add_options_page('BurnZone Moderator', 'BurnZone Moderator', 'administrator', 'conversait_mod', 'conv_mod_page');
 }
 
 function conv_register_settings() {
-  global $conv_opt_name_site_name, $conv_opt_name_sso_logo, $conv_opt_name_sso_key, 
-    $conv_opt_name_enabledfor, $conv_opt_name, $conv_opt_name_activation_type,
-    $conv_opt_name_forum_url;
+  global $conv_opt_name_site_name, $conv_opt_name_sso_logo, $conv_opt_name_sso_key,
+    $conv_opt_name_enabledfor, $conv_opt_name, $conv_opt_name_activation_type;
   //register our settings
   register_setting('conv_settings_group', $conv_opt_name, 'conv_validate_settings');
 
@@ -194,13 +196,11 @@ function conv_register_settings() {
   add_settings_field($conv_opt_name_activation_type, 'Activated for', 'conv_render_setting_activation', 'conversait', 'conv_settings_main');
   add_settings_field($conv_opt_name_site_name, 'Site Name', 'conv_render_setting_site_name', 'conversait', 'conv_settings_main', array( 'label_for' => $conv_opt_name_site_name));
   add_settings_field($conv_opt_name_enabledfor, 'Enable options', 'conv_render_settings_enabledfor', 'conversait' , 'conv_settings_main');
-  add_settings_field($conv_opt_name_forum_url, 'Forum url', 'conv_render_settings_forum_url', 'conversait' , 'conv_settings_main');
   add_settings_field('conv_name_export', 'Export', 'conv_render_settings_export', 'conversait' , 'conv_settings_main');
 
   add_settings_section('conv_settings_sso', 'Single Sign On', 'conv_settings_sso_title', 'conversait');
   add_settings_field($conv_opt_name_sso_logo, 'Logo', 'conv_render_setting_sso_logo', 'conversait', 'conv_settings_sso', array( 'label_for' => $conv_opt_name_sso_logo));
   add_settings_field($conv_opt_name_sso_key, 'Key', 'conv_render_setting_sso_key', 'conversait', 'conv_settings_sso', array( 'label_for' => $conv_opt_name_sso_key));
-
 }
 
 /*
@@ -232,12 +232,6 @@ function conv_render_settings_export() {
     </div>
     <p class="description">Export existing Wordpress comments to Burnzone (you need a valid SSO key)</p>
   <?php
-}
-
-function conv_render_settings_forum_url() {
-  global $conv_opt, $conv_opt_name_forum_url, $conv_opt_name;
-  $forum_url = $conv_opt[$conv_opt_name_forum_url];
-  echo "<input type=\"text\" id=\"$conv_opt_name_forum_url\" name=\"" . $conv_opt_name . "[$conv_opt_name_forum_url]\" value=\"$forum_url\" /><p class=\"description\">The url (permalink) of the page on your site where you want to embed a BurnZone forum instance. Leave blank if you don't want to use forums.</p>";
 }
 
 function conv_settings_main_title() {
@@ -317,8 +311,7 @@ function conv_render_setting_sso_key() {
 
 function conv_validate_settings($options) {
   global $conv_opt_name_site_name, $conv_opt_name_sso_logo, $conv_opt_name_sso_key, $conv_opt_name_enabledfor,
-   $conv_opt, $conv_opt_name_activation_type, $conv_opt_name_activation_date,
-   $conv_opt_name_forum_url;
+   $conv_opt, $conv_opt_name_activation_type, $conv_opt_name_activation_date;
 
   $newOptions = array_merge(array(), (array)$conv_opt);
 
@@ -353,11 +346,6 @@ function conv_validate_settings($options) {
   $newOptions[$conv_opt_name_enabledfor] = $newEnabledfor;
 
   /*
-  * forum url
-  */
-  $newOptions[$conv_opt_name_forum_url] = $options[$conv_opt_name_forum_url];
-
-  /*
   * activation type
   */
   $atype = $options[$conv_opt_name_activation_type];
@@ -381,7 +369,7 @@ function conv_settings_page() {
 ?>
 
 <div class="wrap">
-<h2>BurnZone Commenting Settings</h2>
+<h2>BurnZone Advanced Settings</h2>
 
 <form method="post" action="options.php">
   <?php settings_fields('conv_settings_group'); ?>
@@ -394,6 +382,38 @@ function conv_settings_page() {
 
 <?php }
 
+function conv_frame_page() {
+  global $conv_opt_name_site_name, $conv_opt;
+  $site_name = $conv_opt[$conv_opt_name_site_name];
+?>
+
+<div class="wrap">
+<h2>BurnZone Commenting Settings</h2>
+
+<form method="post" action="options.php">
+  <?php settings_fields('conv_settings_group'); ?>
+
+  <div id="burnzone_save_reminder" class="display_none">
+    <div class="update-nag">
+      You have unsaved changes
+    </div>
+    <?php submit_button(); ?>
+  </div>
+  <!-- <iframe id="burnzone_frame" src="<?php echo CONVERSAIT_SERVER_HOST . "/wordpress_frame?site=$site_name&amp;frame=true"; ?>" style="width:100%; height: 0px;"></iframe> -->
+  <iframe id="burnzone_frame" src="<?php echo CONVERSAIT_SERVER_HOST . "/admin/settings?frame=true&site=$site_name"; ?>" style="width:100%; height: 400px;"></iframe>
+  <div>
+    <a class="conv-show-advanced" href="#">Advanced</a>
+    <i class="conv-hint-advanced">(only use if you experience errors)</i>
+  </div>
+  <div class="conv-advanced-settings display_none">
+  <?php do_settings_sections('conversait'); ?>
+  <?php submit_button(); ?>
+  </div>
+
+</form>
+</div>
+
+<?php }
 function conv_mod_page() {
   global $conv_opt_name_site_name, $conv_opt;
   $site_name = $conv_opt[$conv_opt_name_site_name];
