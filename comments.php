@@ -1,17 +1,11 @@
 <?php
   
-  global $conv_opt_name_site_name, $conv_opt_name_forum_url, $conv_opt;
+  global $conv_opt_name_site_name, $conv_opt;
   global $post;
 
   $conv_area_tag = "";
   $post_link = get_permalink($post->ID);
-  $forum_url = $conv_opt[$conv_opt_name_forum_url];
-  if (isset($forum_url) && $forum_url !== '' && $post_link == $forum_url) {
-    $conv_area_tag = '';
-  }
-  else {
-    $conv_area_tag = '<div id="conversait_area" class="conversait_area" data-conversait-app-type="article"></div>';
-  }
+  $conv_area_tag = '<div id="conversait_area" class="conversait_area" data-conversait-app-type="article"></div>';
   $conv_embed_data = '
 <script type="text/javascript">
   var conversait_id = "' . conv_unique_post_id($post->ID) . '";

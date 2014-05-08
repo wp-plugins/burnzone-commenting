@@ -3,7 +3,7 @@ Contributors: BurnZone
 Tags: comments, commenting system, community, commenting platform, forums, forum system, q&a
 Requires at least: 3.0.5
 Tested up to: 3.9
-Stable tag: 0.8.5
+Stable tag: 0.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,6 +63,12 @@ Visit our support community -> http://help.theburn-zone.com/
 5. The dark theme.
 
 == Changelog ==
+
+= 0.9.0 =
+* Redesign settings page. It is now easier to configure the plugin.
+
+= 0.8.6 =
+* Removed forum url option. We automatically detect the forum page and skip displaying comments.
 
 = 0.8.5 =
 * Changed plugin description.
