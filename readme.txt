@@ -64,6 +64,9 @@ Visit our support community -> http://help.theburn-zone.com/
 
 == Changelog ==
 
+= 0.9.1 =
+* Fixed link to the setting page.
+
 = 0.9.0 =
 * Redesign settings page. It is now easier to configure the plugin.
 

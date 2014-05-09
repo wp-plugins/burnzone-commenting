@@ -181,7 +181,7 @@ function conv_set_head() {
 
 function conv_create_menu() {
   //create new top-level menu
-  add_options_page('BurnZone Commenting Plugin Settings', 'BurnZone Settings', 'administrator', 'conversait_frame', 'conv_frame_page');
+  add_options_page('BurnZone Commenting Plugin Settings', 'BurnZone Settings', 'administrator', 'conversait', 'conv_frame_page');
   //add_options_page('BurnZone Commenting Advanced Settings', 'BurnZone Advanced', 'administrator', 'conversait', 'conv_settings_page');
   add_options_page('BurnZone Moderator', 'BurnZone Moderator', 'administrator', 'conversait_mod', 'conv_mod_page');
 }
