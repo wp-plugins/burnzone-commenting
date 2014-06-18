@@ -68,6 +68,7 @@ conv_setup_frame = function() {
         reload_frame_with(name);
       }
       site.val(name);
+      $("#burnzone_save_reminder .burnzone_site_name").html(name);
       if (name === bz_default_site) {
         $('#burnzone_save_reminder').addClass("display_none");
       } else {
@@ -76,6 +77,10 @@ conv_setup_frame = function() {
     } else if (ev.data.split(" ")[0] === "burnzone-set-sso" && sso.val() != ev.data.split(" ")[1]) {
       sso.val(ev.data.split(" ")[1]);
       $('#burnzone_save_reminder').removeClass("display_none");
+      if (bz_default_site === "" ||  bz_default_site.slice(0, 5) === "site-") {
+        // we currently have a demo site, auto-set to this new site
+        $("input[type='submit']").trigger("click");
+      }
     } else if (ev.data === "burnzone-export-comments") {
       ev.source.postMessage("burnzone-start-export", ev.origin);
       do_export_comments(function (status) {
