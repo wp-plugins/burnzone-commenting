@@ -329,8 +329,8 @@ function conv_validate_settings($options) {
   * site name
   */
   $site_name = trim($options[$conv_opt_name_site_name]);
-  if(!preg_match('/^[a-z0-9]+$/i', $site_name))
-    $site_name = "";
+  /* if(!preg_match('/^[a-z0-9]+$/i', $site_name)) */
+  /*   $site_name = ""; */
   $newOptions[$conv_opt_name_site_name] = strtolower($site_name);
 
   /*
@@ -383,8 +383,12 @@ function conv_settings_page() {
 <?php }
 
 function conv_frame_page() {
-  global $conv_opt_name_site_name, $conv_opt;
+  global $conv_opt_name_site_name, $conv_opt, $conv_opt_name_demo_site, $conv_opt_name_demo_sso;
   $site_name = $conv_opt[$conv_opt_name_site_name];
+  $demo_site = $conv_opt[$conv_opt_name_demo_site];
+  if ($site_name == $demo_site) {
+    $signed = urlencode($demo_site.':'.conv_sign_message(json_encode(array("name" => $demo_site))));
+  }
 ?>
 
 <div class="wrap">
@@ -395,16 +399,21 @@ function conv_frame_page() {
 
   <div id="burnzone_save_reminder" class="display_none">
     <div class="update-nag">
-      You have unsaved changes
+      Apply '<strong class="burnzone_site_name"></strong>' settings to this WordPress site.
     </div>
-    <?php submit_button(); ?>
+    <?php submit_button('Update Site'); ?>
   </div>
   <!-- <iframe id="burnzone_frame" src="<?php echo CONVERSAIT_SERVER_HOST . "/wordpress_frame?site=$site_name&amp;frame=true"; ?>" style="width:100%; height: 0px;"></iframe> -->
+  <?php if (empty($signed)) { ?>
   <iframe id="burnzone_frame" src="<?php echo CONVERSAIT_SERVER_HOST . "/admin/settings?frame=true&site=$site_name"; ?>" style="width:100%; height: 400px;"></iframe>
+  <?php } else { ?>
+  <iframe id="burnzone_frame" src="<?php echo CONVERSAIT_SERVER_HOST . "/admin/settings?frame=true&site=$site_name&demo=$signed"; ?>" style="width:100%; height: 400px;"></iframe>
+  <?php } ?>
   <div>
     <a class="conv-show-advanced" href="#">Advanced</a>
     <i class="conv-hint-advanced">(only use if you experience errors)</i>
   </div>
+
   <div class="conv-advanced-settings display_none">
   <?php do_settings_sections('conversait'); ?>
   <?php submit_button(); ?>
