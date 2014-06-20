@@ -3,7 +3,7 @@ Contributors: BurnZone
 Tags: comments, commenting system, community, commenting platform, forums, forum system, q&a
 Requires at least: 3.0.5
 Tested up to: 3.9
-Stable tag: 0.9.0
+Stable tag: 0.9.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,6 +63,15 @@ Visit our support community -> http://help.theburn-zone.com/
 5. The dark theme.
 
 == Changelog ==
+
+= 0.9.3 =
+* Fixed a bug that made the plugin incompatible with PHP versions before 5.3.
+
+= 0.9.2 =
+* Added zero-conf plugin activation.
+
+= 0.9.1 =
+* Fixed link to the setting page.
 
 = 0.9.0 =
 * Redesign settings page. It is now easier to configure the plugin.
