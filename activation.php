@@ -25,7 +25,7 @@ function conv_add_forum_page() {
       'post_title'     => 'Forum',
       'post_status'    => 'publish',
       'post_type'      => 'page',
-      'comment_status' => 'open',
+      'comment_status' => 'closed',
     );
     $forum = wp_insert_post($post);
     if ($forum != 0) {

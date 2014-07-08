@@ -3,7 +3,7 @@ Contributors: BurnZone
 Tags: comments, commenting system, community, commenting platform, forums, forum system, q&a
 Requires at least: 3.0.5
 Tested up to: 3.9
-Stable tag: 0.9.3
+Stable tag: 0.9.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,6 +63,10 @@ Visit our support community -> http://help.theburn-zone.com/
 5. The dark theme.
 
 == Changelog ==
+
+= 0.9.4 =
+* Added option to disable comments in case people want to use only the forums. This option can be found on the settings page, after clicking 'Advanced'.
+* The comments are closed for the forum page created during the plugin activation.
 
 = 0.9.3 =
 * Fixed a bug that made the plugin incompatible with PHP versions before 5.3.

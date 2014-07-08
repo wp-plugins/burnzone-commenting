@@ -60,8 +60,8 @@ conv_setup_frame = function() {
     if (ev.data === "burnzone-reload") {
       reload_frame_with(site.val());
     } else if (ev.data === "burnzone-have-sites") {
-      ev.source.postMessage("burnzone-default-site " + site.val(), ev.origin)
-      ev.source.postMessage("burnzone-current-url " + self_url + " " + self_name, ev.origin)
+      ev.source.postMessage("burnzone-default-site " + site.val(), ev.origin);
+      ev.source.postMessage("burnzone-current-url " + self_url + " " + self_name, ev.origin);
     } else if (ev.data.split(" ")[0] === "burnzone-set-site") {
       var name = ev.data.split(" ")[1];
       if (name !== site.val()) {

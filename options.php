@@ -21,6 +21,7 @@
   $conv_opt_name_activation_date = 'conversait_activation_date'; //activation
   $conv_opt_name_demo_site = 'conversait_demo_site';
   $conv_opt_name_demo_sso = 'conversait_demo_sso';
+  $conv_opt_name_dis_comments = 'conversait_disable_comments';
 
   function conv_ensure_options() {
     global $conv_opt_name_site_name, $conv_site_name_default,
