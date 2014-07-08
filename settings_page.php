@@ -181,7 +181,7 @@ function conv_set_head() {
 
 function conv_create_menu() {
   //create new top-level menu
-  add_options_page('BurnZone Commenting Plugin Settings', 'BurnZone Settings', 'administrator', 'conversait_frame', 'conv_frame_page');
+  add_options_page('BurnZone Commenting Plugin Settings', 'BurnZone Settings', 'administrator', 'conversait', 'conv_frame_page');
   //add_options_page('BurnZone Commenting Advanced Settings', 'BurnZone Advanced', 'administrator', 'conversait', 'conv_settings_page');
   add_options_page('BurnZone Moderator', 'BurnZone Moderator', 'administrator', 'conversait_mod', 'conv_mod_page');
 }
@@ -196,6 +196,7 @@ function conv_register_settings() {
   add_settings_field($conv_opt_name_activation_type, 'Activated for', 'conv_render_setting_activation', 'conversait', 'conv_settings_main');
   add_settings_field($conv_opt_name_site_name, 'Site Name', 'conv_render_setting_site_name', 'conversait', 'conv_settings_main', array( 'label_for' => $conv_opt_name_site_name));
   add_settings_field($conv_opt_name_enabledfor, 'Enable options', 'conv_render_settings_enabledfor', 'conversait' , 'conv_settings_main');
+  add_settings_field($conv_opt_name_dis_comments, 'Disable comments', 'conv_render_settings_disable_comments', 'conversait' , 'conv_settings_main');
   add_settings_field('conv_name_export', 'Export', 'conv_render_settings_export', 'conversait' , 'conv_settings_main');
 
   add_settings_section('conv_settings_sso', 'Single Sign On', 'conv_settings_sso_title', 'conversait');
@@ -204,9 +205,24 @@ function conv_register_settings() {
 }
 
 /*
+ * Disable the comments, but the script will still be loaded. Useful when you only want to use the forums or other widgets.
+ */
+function conv_render_settings_disable_comments() {
+  global $conv_opt, $conv_opt_name, $conv_opt_name_dis_comments;
+  $checked = '';
+  if (isset($conv_opt[$conv_opt_name_dis_comments]) && $conv_opt[$conv_opt_name_dis_comments] === "1")
+    $checked = 'checked="true"';
+?>
+  <div>
+    <input type="checkbox" name="<?php echo $conv_opt_name . "[$conv_opt_name_dis_comments]" ?>" value="1" <?php echo $checked ?> id="<?php echo $conv_opt_name_dis_comments ?>" />
+    <p>Check this if you only want to use the forums</p>
+  </div>
+<?php
+}
+
+/*
 * Enabling the commenting platform based on post type.
 */
-
 function conv_render_settings_enabledfor() {
   global $conv_opt, $conv_opt_name_enabledfor, $conv_opt_name;
   $posttypes = get_post_types();
@@ -311,7 +327,7 @@ function conv_render_setting_sso_key() {
 
 function conv_validate_settings($options) {
   global $conv_opt_name_site_name, $conv_opt_name_sso_logo, $conv_opt_name_sso_key, $conv_opt_name_enabledfor,
-   $conv_opt, $conv_opt_name_activation_type, $conv_opt_name_activation_date;
+   $conv_opt, $conv_opt_name_activation_type, $conv_opt_name_activation_date, $conv_opt_name_dis_comments;
 
   $newOptions = array_merge(array(), (array)$conv_opt);
 
@@ -329,8 +345,8 @@ function conv_validate_settings($options) {
   * site name
   */
   $site_name = trim($options[$conv_opt_name_site_name]);
-  if(!preg_match('/^[a-z0-9]+$/i', $site_name))
-    $site_name = "";
+  /* if(!preg_match('/^[a-z0-9]+$/i', $site_name)) */
+  /*   $site_name = ""; */
   $newOptions[$conv_opt_name_site_name] = strtolower($site_name);
 
   /*
@@ -362,6 +378,11 @@ function conv_validate_settings($options) {
     }
   }
 
+  /*
+   * disable comments
+   */
+  $newOptions[$conv_opt_name_dis_comments] = $options[$conv_opt_name_dis_comments];
+
   return $newOptions;
 }
 
@@ -383,8 +404,12 @@ function conv_settings_page() {
 <?php }
 
 function conv_frame_page() {
-  global $conv_opt_name_site_name, $conv_opt;
+  global $conv_opt_name_site_name, $conv_opt, $conv_opt_name_demo_site, $conv_opt_name_demo_sso;
   $site_name = $conv_opt[$conv_opt_name_site_name];
+  $demo_site = $conv_opt[$conv_opt_name_demo_site];
+  if ($site_name == $demo_site) {
+    $signed = urlencode($demo_site.':'.conv_sign_message(json_encode(array("name" => $demo_site))));
+  }
 ?>
 
 <div class="wrap">
@@ -395,16 +420,21 @@ function conv_frame_page() {
 
   <div id="burnzone_save_reminder" class="display_none">
     <div class="update-nag">
-      You have unsaved changes
+      Apply '<strong class="burnzone_site_name"></strong>' settings to this WordPress site.
     </div>
-    <?php submit_button(); ?>
+    <?php submit_button('Update Site'); ?>
   </div>
   <!-- <iframe id="burnzone_frame" src="<?php echo CONVERSAIT_SERVER_HOST . "/wordpress_frame?site=$site_name&amp;frame=true"; ?>" style="width:100%; height: 0px;"></iframe> -->
+  <?php if (empty($signed)) { ?>
   <iframe id="burnzone_frame" src="<?php echo CONVERSAIT_SERVER_HOST . "/admin/settings?frame=true&site=$site_name"; ?>" style="width:100%; height: 400px;"></iframe>
+  <?php } else { ?>
+  <iframe id="burnzone_frame" src="<?php echo CONVERSAIT_SERVER_HOST . "/admin/settings?frame=true&site=$site_name&demo=$signed"; ?>" style="width:100%; height: 400px;"></iframe>
+  <?php } ?>
   <div>
     <a class="conv-show-advanced" href="#">Advanced</a>
     <i class="conv-hint-advanced">(only use if you experience errors)</i>
   </div>
+
   <div class="conv-advanced-settings display_none">
   <?php do_settings_sections('conversait'); ?>
   <?php submit_button(); ?>
