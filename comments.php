@@ -16,12 +16,7 @@
 ?>
 <div id="comments">
   <div id="respond" style="background:none; width: auto; border: none">
-    <?php if (ssoEnabled()) { ?>
-      <script type="text/javascript">
-        var conversait_sso = <?php echo '"' . conv_build_sso_string() . '"'; ?>;
-        var conversait_sso_options = <?php echo conv_build_sso_options(); ?>;
-      </script>
-    <?php }
+    <?php
       echo $conv_area_tag . $conv_embed_data;
     ?>
   </div>
