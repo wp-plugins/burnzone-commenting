@@ -198,6 +198,7 @@ function conv_register_settings() {
   add_settings_field($conv_opt_name_site_name, 'Site Name', 'conv_render_setting_site_name', 'conversait', 'conv_settings_main', array( 'label_for' => $conv_opt_name_site_name));
   add_settings_field($conv_opt_name_enabledfor, 'Enable options', 'conv_render_settings_enabledfor', 'conversait' , 'conv_settings_main');
   add_settings_field($conv_opt_name_dis_comments, 'Disable comments', 'conv_render_settings_disable_comments', 'conversait' , 'conv_settings_main');
+  add_settings_field($conv_opt_name_dis_discovery, 'Disable default discovery widget', 'conv_render_settings_disable_discovery', 'conversait' , 'conv_settings_main');
   add_settings_field('conv_name_export', 'Export', 'conv_render_settings_export', 'conversait' , 'conv_settings_main');
 
   add_settings_section('conv_settings_sso', 'Single Sign On', 'conv_settings_sso_title', 'conversait');
@@ -217,6 +218,22 @@ function conv_render_settings_disable_comments() {
   <div>
     <input type="checkbox" name="<?php echo $conv_opt_name . "[$conv_opt_name_dis_comments]" ?>" value="1" <?php echo $checked ?> id="<?php echo $conv_opt_name_dis_comments ?>" />
     <p>Check this if you only want to use the forums</p>
+  </div>
+<?php
+}
+
+/*
+ * Disable the default discovery widget.
+ */
+function conv_render_settings_disable_discovery() {
+  global $conv_opt, $conv_opt_name, $conv_opt_name_dis_discovery;
+  $checked = '';
+  if (isset($conv_opt[$conv_opt_name_dis_discovery]) && $conv_opt[$conv_opt_name_dis_discovery] === "1")
+    $checked = 'checked="true"';
+?>
+  <div>
+    <input type="checkbox" name="<?php echo $conv_opt_name . "[$conv_opt_name_dis_discovery]" ?>" value="1" <?php echo $checked ?> id="<?php echo $conv_opt_name_dis_discovery ?>" />
+    <p>Check this if you don't want the default discovery widget automatically added.</p>
   </div>
 <?php
 }
@@ -328,7 +345,8 @@ function conv_render_setting_sso_key() {
 
 function conv_validate_settings($options) {
   global $conv_opt_name_site_name, $conv_opt_name_sso_logo, $conv_opt_name_sso_key, $conv_opt_name_enabledfor,
-   $conv_opt, $conv_opt_name_activation_type, $conv_opt_name_activation_date, $conv_opt_name_dis_comments;
+    $conv_opt, $conv_opt_name_activation_type, $conv_opt_name_activation_date, $conv_opt_name_dis_comments,
+    $conv_opt_name_dis_discovery;
 
   $newOptions = array_merge(array(), (array)$conv_opt);
 
@@ -383,6 +401,11 @@ function conv_validate_settings($options) {
    * disable comments
    */
   $newOptions[$conv_opt_name_dis_comments] = $options[$conv_opt_name_dis_comments];
+
+  /*
+   * disable discovery
+   */
+  $newOptions[$conv_opt_name_dis_discovery] = $options[$conv_opt_name_dis_discovery];
 
   return $newOptions;
 }
