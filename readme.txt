@@ -2,8 +2,8 @@
 Contributors: BurnZone
 Tags: comments, commenting system, community, commenting platform, forums, forum system, q&a
 Requires at least: 3.0.5
-Tested up to: 3.9
-Stable tag: 0.10
+Tested up to: 4.2.2
+Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -11,7 +11,7 @@ Upgrade your site with this BurnZone Forums & Commenting plugin. We replace stan
 
 == Description ==
 
-BurnZone Forums & Commenting is a turn key community platform that brings together commenting & forums under one roof.  We also include industry first community features designed to quantify and promote positive contributions. We have released a fully functional BETA version that we are continuing to improve. We are happy to receive feedback.
+BurnZone Forums & Commenting is a turn key community platform that brings together commenting & forums under one roof.  We also include industry first community features designed to quantify and promote positive contributions.
 
 = Current features for Both Forums & Comments: =
 
@@ -63,6 +63,9 @@ Visit our support community -> http://help.theburn-zone.com/
 5. The dark theme.
 
 == Changelog ==
+
+= 1.0 =
+* First stable release.
 
 = 0.10 =
 * Added content discovery widget.
