@@ -2,8 +2,8 @@
 Contributors: BurnZone
 Tags: comments, commenting system, community, commenting platform, forums, forum system, q&a
 Requires at least: 3.0.5
-Tested up to: 3.9
-Stable tag: 0.9.0
+Tested up to: 4.2.2
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -11,7 +11,7 @@ Upgrade your site with this BurnZone Forums & Commenting plugin. We replace stan
 
 == Description ==
 
-BurnZone Forums & Commenting is a turn key community platform that brings together commenting & forums under one roof.  We also include industry first community features designed to quantify and promote positive contributions. We have released a fully functional BETA version that we are continuing to improve. We are happy to receive feedback.
+BurnZone Forums & Commenting is a turn key community platform that brings together commenting & forums under one roof.  We also include industry first community features designed to quantify and promote positive contributions.
 
 = Current features for Both Forums & Comments: =
 
@@ -63,6 +63,31 @@ Visit our support community -> http://help.theburn-zone.com/
 5. The dark theme.
 
 == Changelog ==
+
+= 1.0.1
+* Whitelisted element attributes used by BurnZone. Necessary for kses.
+
+= 1.0 =
+* First stable release.
+
+= 0.10 =
+* Added content discovery widget.
+
+= 0.9.5 =
+* Fixed undefined variable bug.
+
+= 0.9.4 =
+* Added option to disable comments in case people want to use only the forums. This option can be found on the settings page, after clicking 'Advanced'.
+* The comments are closed for the forum page created during the plugin activation.
+
+= 0.9.3 =
+* Fixed a bug that made the plugin incompatible with PHP versions before 5.3.
+
+= 0.9.2 =
+* Added zero-conf plugin activation.
+
+= 0.9.1 =
+* Fixed link to the setting page.
 
 = 0.9.0 =
 * Redesign settings page. It is now easier to configure the plugin.

@@ -1,11 +1,15 @@
 <?php
-  
-  global $conv_opt_name_site_name, $conv_opt;
+
+  global $conv_opt_name_dis_discovery, $conv_opt;
   global $post;
 
   $conv_area_tag = "";
   $post_link = get_permalink($post->ID);
+  $disable_discovery = (isset($conv_opt[$conv_opt_name_dis_discovery]) && $conv_opt[$conv_opt_name_dis_discovery] === "1");
   $conv_area_tag = '<div id="conversait_area" class="conversait_area" data-conversait-app-type="article"></div>';
+  if (!$disable_discovery) {
+    $conv_area_tag = '<div id="conversait_area" class="conversait_area" data-conversait-app-type="widget:discovery"></div>' . $conv_area_tag;
+  }
   $conv_embed_data = '
 <script type="text/javascript">
   var conversait_id = "' . conv_unique_post_id($post->ID) . '";
@@ -16,12 +20,7 @@
 ?>
 <div id="comments">
   <div id="respond" style="background:none; width: auto; border: none">
-    <?php if (ssoEnabled()) { ?>
-      <script type="text/javascript">
-        var conversait_sso = <?php echo '"' . conv_build_sso_string() . '"'; ?>;
-        var conversait_sso_options = <?php echo conv_build_sso_options(); ?>;
-      </script>
-    <?php }
+    <?php
       echo $conv_area_tag . $conv_embed_data;
     ?>
   </div>
