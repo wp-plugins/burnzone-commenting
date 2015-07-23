@@ -3,7 +3,7 @@ Contributors: BurnZone
 Tags: comments, commenting system, community, commenting platform, forums, forum system, q&a
 Requires at least: 3.0.5
 Tested up to: 4.2.2
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,6 +63,9 @@ Visit our support community -> http://help.theburn-zone.com/
 5. The dark theme.
 
 == Changelog ==
+
+= 1.0.1
+* Whitelisted element attributes used by BurnZone. Necessary for kses.
 
 = 1.0 =
 * First stable release.

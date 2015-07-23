@@ -4,7 +4,7 @@
 Plugin Name: BurnZone Commenting Wordpress Plugin
 Plugin URI: http://www.theburn-zone.com
 Description: Integrates the BurnZone commenting engine
-Version: 1.0
+Version: 1.0.1
 Author: The Burnzone team
 Author URI: http://www.theburn-zone.com
 License: GPL2
@@ -235,6 +235,19 @@ function conv_load_plugin() {
     conv_activate_plugin();
   }
 }
+
+function conv_filter_allowed_html($allowed, $context) {
+  if ('post' === $context || is_null($context)) {
+    $allowed['div'] = array_merge($allowed['div'], array(
+      'data-conversait-app-type' => true,
+      'bz-article-entries' => true,
+      'bz-forum-entries' => true
+    ));
+  }
+  return $allowed;
+}
+
+add_filter('wp_kses_allowed_html', 'conv_filter_allowed_html', 10, 2);
 
 include(CONVERSAIT_PATH . 'activation.php');
 
