@@ -3,7 +3,7 @@ Contributors: BurnZone
 Tags: comments, commenting system, community, commenting platform, forums, forum system, q&a
 Requires at least: 3.0.5
 Tested up to: 4.2.2
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,7 +64,10 @@ Visit our support community -> http://help.theburn-zone.com/
 
 == Changelog ==
 
-= 1.0.1
+= 1.0.2 =
+* Fixed SSO login.
+
+= 1.0.1 =
 * Whitelisted element attributes used by BurnZone. Necessary for kses.
 
 = 1.0 =
