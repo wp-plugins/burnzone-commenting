@@ -4,7 +4,7 @@
 Plugin Name: BurnZone Commenting Wordpress Plugin
 Plugin URI: http://www.theburn-zone.com
 Description: Integrates the BurnZone commenting engine
-Version: 0.9.0
+Version: 1.0.2
 Author: The Burnzone team
 Author URI: http://www.theburn-zone.com
 License: GPL2
@@ -39,8 +39,10 @@ $conv_opt = conv_ensure_options();
 function conv_should_replace_comments($post) {
   global $conv_opt_name_enabledfor,
     $conv_opt_name_activation_type, $conv_opt_name_activation_date, //activation
-    $conv_opt;
+    $conv_opt, $conv_opt_name_dis_comments;
   if (is_null($post))
+    return false;
+  if (isset($conv_opt[$conv_opt_name_dis_comments]) && $conv_opt[$conv_opt_name_dis_comments] === '1')
     return false;
   $post_time = strtotime($post->post_date);
   if ($conv_opt[$conv_opt_name_enabledfor][$post->post_type] !== "1")
@@ -115,7 +117,10 @@ function conv_load_embed_script() {
 ?>
   <script type="text/javascript">
     (function() {
-      var conversait_sitename = <?php echo '"' . $site_name . '"' ?>;
+      <?php if (ssoEnabled()) { ?>
+        window.conversait_sso = <?php echo '"' . conv_build_sso_string() . '"'; ?>;
+        window.conversait_sso_options = <?php echo conv_build_sso_options(); ?>;
+      <?php } ?>
       var conversait = document.createElement("script");
       conversait.type = "text/javascript";
       conversait.async = true;
@@ -175,6 +180,13 @@ function conv_dashboard_content(){
 <?php }
 
 /*
+* Compute settings link
+*/
+function conv_settings_link() {
+  return get_bloginfo('wpurl') . '/wp-admin/options-general.php?page=conversait';
+}
+
+/*
 * Add a settings link
 */
 function conv_plugin_action_links($links, $file) {
@@ -185,7 +197,7 @@ function conv_plugin_action_links($links, $file) {
   // check to make sure we are on the correct plugin
   if ($file == $this_plugin) {
     // the anchor tag and href to the URL we want. For a "Settings" link, this needs to be the url of your settings page
-    $settings_link = '<a href="' . get_bloginfo('wpurl') . '/wp-admin/options-general.php?page=conversait">Settings</a>';
+    $settings_link = '<a href="' . conv_settings_link() . '">Settings</a>';
     // add the link to the list
     array_unshift($links, $settings_link);
   }
@@ -206,6 +218,37 @@ function conv_allow_redirect($allowed)
 if (ssoEnabled()) {
   add_filter('allowed_redirect_hosts', 'conv_allow_redirect');
 }
+
+function conv_activation_hook() {
+  add_option('conv_plugin_stage', 'activation');
+}
+
+register_activation_hook(__FILE__, 'conv_activation_hook');
+
+add_action('admin_init', 'conv_load_plugin');
+
+function conv_load_plugin() {
+  if (is_admin() && get_option('conv_plugin_stage') == 'activation') {
+    delete_option('conv_plugin_stage');
+    /* plugin is being activated */
+    conv_activate_plugin();
+  }
+}
+
+function conv_filter_allowed_html($allowed, $context) {
+  if ('post' === $context || is_null($context)) {
+    $allowed['div'] = array_merge($allowed['div'], array(
+      'data-conversait-app-type' => true,
+      'bz-article-entries' => true,
+      'bz-forum-entries' => true
+    ));
+  }
+  return $allowed;
+}
+
+add_filter('wp_kses_allowed_html', 'conv_filter_allowed_html', 10, 2);
+
+include(CONVERSAIT_PATH . 'activation.php');
 
 include(CONVERSAIT_PATH . 'settings_page.php');
 ?>
